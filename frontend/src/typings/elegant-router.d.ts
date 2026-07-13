@@ -23,10 +23,8 @@ declare module "@elegant-router/types" {
     "chat": "/chat";
     "chat-history": "/chat-history";
     "iframe-page": "/iframe-page/:url";
-    "invite-code": "/invite-code";
     "knowledge-base": "/knowledge-base";
     "login": "/login/:module(pwd-login|code-login|register|reset-pwd|bind-wechat)?";
-    "model-provider": "/model-provider";
     "org-tag": "/org-tag";
     "personal-center": "/personal-center";
     "recharge": "/recharge";
@@ -70,10 +68,8 @@ declare module "@elegant-router/types" {
     | "chat"
     | "chat-history"
     | "iframe-page"
-    | "invite-code"
     | "knowledge-base"
     | "login"
-    | "model-provider"
     | "org-tag"
     | "personal-center"
     | "recharge"
@@ -103,9 +99,7 @@ declare module "@elegant-router/types" {
     | "login"
     | "chat-history"
     | "chat"
-    | "invite-code"
     | "knowledge-base"
-    | "model-provider"
     | "org-tag"
     | "personal-center"
     | "recharge-manage"

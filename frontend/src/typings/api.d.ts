@@ -269,37 +269,6 @@ declare namespace Api {
       embeddingQueryGlobalToken: TokenBudgetLimit;
     }
 
-    interface ModelProviderItem {
-      provider: string;
-      displayName: string;
-      apiStyle: string;
-      apiBaseUrl: string;
-      model: string;
-      dimension: number | null;
-      enabled: boolean;
-      active: boolean;
-      hasApiKey: boolean;
-      maskedApiKey: string;
-      apiKeyInput?: string;
-    }
-
-    interface ModelProviderScopeSettings {
-      scope: 'llm' | 'embedding';
-      activeProvider: string;
-      providers: ModelProviderItem[];
-    }
-
-    interface ModelProviderSettings {
-      llm: ModelProviderScopeSettings;
-      embedding: ModelProviderScopeSettings;
-    }
-
-    interface ConnectivityTestResult {
-      success: boolean;
-      message: string;
-      latencyMs: number;
-    }
-
     interface UsageTrendPoint {
       day: string;
       chatRequestCount: number;

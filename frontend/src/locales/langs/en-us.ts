@@ -165,7 +165,6 @@
     chat: 'Chat Assistant',
     'chat-history': 'Chat History',
     'knowledge-base': 'Knowledge Base',
-    'model-provider': 'Model Providers',
     'org-tag': 'Organization Tag',
     'usage-monitor': 'Usage Monitor',
     user: 'User Management',
