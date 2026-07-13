@@ -366,8 +366,8 @@ async function handleSourceFileClick(fileInfo: {
       </div>
     </div>
     <div v-else class="flex items-center gap-4">
-      <NAvatar class="bg-primary">
-        <SystemLogo class="text-6 text-white" />
+      <NAvatar class="assistant-avatar">
+        <SystemLogo class="size-6" />
       </NAvatar>
       <div class="flex-col gap-1">
         <NText class="text-4 font-bold">SmartCopilot 助手</NText>
@@ -436,6 +436,17 @@ async function handleSourceFileClick(fileInfo: {
 </template>
 
 <style scoped lang="scss">
+.assistant-avatar {
+  border: 1px solid #d8dcff;
+  background: #f8f9ff;
+  box-shadow: 0 2px 6px rgb(91 108 255 / 0.16);
+}
+
+:deep(.assistant-avatar svg) {
+  width: 24px;
+  height: 24px;
+}
+
 :deep(.source-file-link) {
   color: #1890ff;
   cursor: pointer;
