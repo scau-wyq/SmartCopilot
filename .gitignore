@@ -22,8 +22,8 @@ ENV/
 *.egg-info/
 .eggs/
 pip-wheel-metadata/
-build/
-dist/
+/build/
+/dist/
 wheels/
 htmlcov/
 .coverage
@@ -92,4 +92,3 @@ docker/*-data/
 .agents/
 .codegraph/
 .codex/
-
