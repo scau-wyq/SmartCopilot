@@ -1,27 +1,18 @@
 {
-  "name": "pi-smart",
+  "name": "smart-copilot",
   "type": "module",
   "version": "1.3.13",
-  "description": "PaiSmart",
+  "description": "SmartCopilot",
   "author": {
-    "name": "PaiSmart",
-    "url": "https://github.com/itwanger/PaiSmart.git"
+    "name": "SmartCopilot"
   },
   "license": "MIT",
-  "homepage": "https://github.com/itwanger/PaiSmart.git",
-  "repository": {
-    "url": "https://github.com/itwanger/PaiSmart.git"
-  },
-  "bugs": {
-    "url": "https://github.com/itwanger/PaiSmart/issues"
-  },
   "keywords": [
     "ai",
     "rag",
     "llm",
     "chat",
-    "itwanger",
-    "pai-smart"
+    "smart-copilot"
   ],
   "engines": {
     "node": ">=18.20.0",
@@ -118,6 +109,5 @@
   "simple-git-hooks": {
     "commit-msg": "pnpm sa git-commit-verify",
     "pre-commit": "cd frontend && pnpm typecheck && pnpm lint && git diff --exit-code"
-  },
-  "website": "https://github.com/itwanger/PaiSmart.git"
+  }
 }
