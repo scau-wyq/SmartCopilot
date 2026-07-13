@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const chatStore = useChatStore();
 const { connectionStatus, input, isRateLimited, list, rateLimitRemainingSeconds, wsData } = storeToRefs(chatStore);
+const modelOptionsLoading = ref(false);
+const modelOptions = ref<Api.Model.Option[]>([]);
+const modelBalances = ref({ llmToken: 0, embeddingToken: 0 });
 
 function buildWsErrorMessage(data: Record<string, any>) {
   if (data.code === 429) {
@@ -48,6 +51,31 @@ const sendDisabled = computed(() => {
   }
   return !input.value.message || ['CLOSED', 'CONNECTING'].includes(connectionStatus.value);
 });
+
+const selectableModelOptions = computed(() =>
+  modelOptions.value.map(item => ({
+    label: `${item.label}${item.billable ? `（剩余 ${Number(item.remainingTokens || 0).toLocaleString()}）` : ''}`,
+    value: item.mode,
+    disabled: !item.enabled
+  }))
+);
+
+async function loadModelOptions() {
+  modelOptionsLoading.value = true;
+  try {
+    const { error, data } = await request<Api.Model.OptionsResponse>({
+      url: '/models/options',
+      method: 'get'
+    });
+    if (!error && data) {
+      modelOptions.value = data.options;
+      modelBalances.value = data.balances;
+      input.value.modelMode = input.value.modelMode || data.defaultMode || 'FREE';
+    }
+  } finally {
+    modelOptionsLoading.value = false;
+  }
+}
 
 const connectionText = computed(() => {
   if (connectionStatus.value === 'OPEN') {
@@ -105,6 +133,10 @@ function handleCompletionPayload(assistant: Api.Chat.Message, payload: Record<st
   if (payload.referenceMappings) {
     assistant.referenceMappings = payload.referenceMappings;
   }
+  if (payload.conversationId && payload.conversationId !== chatStore.conversationId) {
+    chatStore.conversationId = payload.conversationId;
+  }
+  chatStore.loadSessions().catch(() => {});
   markExecutingToolsAsSuccess(assistant);
   stopGenerationStatusMonitor();
 }
@@ -329,8 +361,14 @@ const handleSend = async () => {
     return;
   }
 
+  if (input.value.modelMode === 'PAID' && modelBalances.value.llmToken <= 0) {
+    window.$message?.warning('LLM Token 余额不足，请先充值或切换免费模型');
+    return;
+  }
+
+  const message = input.value.message;
   list.value.push({
-    content: input.value.message,
+    content: message,
     role: 'user'
   });
   list.value.push({
@@ -339,7 +377,13 @@ const handleSend = async () => {
     status: 'pending',
     toolEvents: []
   });
-  chatStore.wsSend(input.value.message);
+  chatStore.wsSend(
+    JSON.stringify({
+      type: 'chat',
+      message,
+      modelMode: input.value.modelMode || 'FREE'
+    })
+  );
   input.value.message = '';
   startGenerationStatusMonitor();
 };
@@ -372,6 +416,10 @@ const handShortcut = (e: KeyboardEvent) => {
 onUnmounted(() => {
   stopGenerationStatusMonitor();
 });
+
+onMounted(() => {
+  loadModelOptions();
+});
 </script>
 
 <template>
@@ -382,6 +430,13 @@ onUnmounted(() => {
     <div
       class="chat-input-shell mx-auto max-w-[960px] w-full flex items-end gap-2 rounded-2xl bg-white px-3.5 py-2.5 dark:bg-[#1f1f1f]"
     >
+      <NSelect
+        v-model:value="input.modelMode"
+        :options="selectableModelOptions"
+        :loading="modelOptionsLoading"
+        size="small"
+        class="w-150px shrink-0 self-center"
+      />
       <textarea
         ref="inputRef"
         v-model.trim="input.message"

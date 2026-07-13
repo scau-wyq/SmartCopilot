@@ -36,3 +36,11 @@ export function fetchRechargeOrderDetail(tradeNo: string) {
     method: 'get'
   });
 }
+
+/** 模拟支付成功 */
+export function fetchMockPayRechargeOrder(tradeNo: string) {
+  return request<Api.Recharge.Order>({
+    url: `/recharge/orders/${tradeNo}/mock-pay`,
+    method: 'post'
+  });
+}

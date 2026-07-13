@@ -1,4 +1,4 @@
-const local: App.I18n.Schema = {
+﻿const local: App.I18n.Schema = {
   system: {
     title: 'PaiSmart',
     updateTitle: 'System Version Update Notification',
@@ -164,7 +164,6 @@ const local: App.I18n.Schema = {
     'iframe-page': 'Iframe',
     chat: 'Chat Assistant',
     'chat-history': 'Chat History',
-    'invite-code': 'Invite Codes',
     'knowledge-base': 'Knowledge Base',
     'model-provider': 'Model Providers',
     'org-tag': 'Organization Tag',
@@ -185,7 +184,6 @@ const local: App.I18n.Schema = {
         codePlaceholder: 'Please enter verification code',
         passwordPlaceholder: 'Please enter password',
         confirmPasswordPlaceholder: 'Please enter password again',
-        inviteCodePlaceholder: 'Please enter invite code',
         codeLogin: 'Verification code login',
         confirm: 'Confirm',
         back: 'Back',
@@ -216,10 +214,7 @@ const local: App.I18n.Schema = {
         agreement: 'By registering, you agree to our',
         protocol: '《User Agreement》',
         and: 'and',
-        policy: '《Privacy Policy》',
-        inviteCodeTip:
-          'This site is invite-only. If you do not have an invite code yet, follow the WeChat official account "沉默王二" and reply with "聪明".'
-      },
+        policy: '《Privacy Policy》',},
       resetPwd: {
         title: 'Reset Password'
       },
@@ -280,3 +275,4 @@ const local: App.I18n.Schema = {
 };
 
 export default local;
+

@@ -1,4 +1,4 @@
-/** The global namespace for the app */
+﻿/** The global namespace for the app */
 declare namespace App {
   /** Theme namespace */
   namespace Theme {
@@ -424,7 +424,6 @@ declare namespace App {
             codePlaceholder: string;
             passwordPlaceholder: string;
             confirmPasswordPlaceholder: string;
-            inviteCodePlaceholder: string;
             codeLogin: string;
             confirm: string;
             back: string;
@@ -456,7 +455,6 @@ declare namespace App {
             protocol: string;
             and: string;
             policy: string;
-            inviteCodeTip: string;
           };
           resetPwd: {
             title: string;
@@ -563,3 +561,4 @@ declare namespace App {
     };
   }
 }
+

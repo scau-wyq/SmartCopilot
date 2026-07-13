@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Namespace Api
  *
  * All backend api type
@@ -139,36 +139,59 @@ declare namespace Api {
     type List = Common.PaginatingQueryRecord<Item>;
   }
 
-  namespace InviteCode {
-    type SearchParams = CommonType.RecordNullable<
-      Common.CommonSearchParams & {
-        enabled: boolean;
-      }
-    >;
+  namespace Model {
+    type Mode = 'FREE' | 'PAID' | 'CUSTOM';
 
-    interface Creator {
+    interface Option {
+      mode: Mode;
+      label: string;
+      model: string;
+      enabled: boolean;
+      billable: boolean;
+      remainingTokens?: number;
+    }
+
+    interface OptionsResponse {
+      defaultMode: Mode;
+      options: Option[];
+      customModel: Profile.CustomModel;
+      balances: {
+        llmToken: number;
+        embeddingToken: number;
+      };
+    }
+  }
+
+  namespace Profile {
+    interface CustomModel {
+      baseUrl: string;
+      model: string;
+      hasApiKey: boolean;
+      maskedApiKey: string;
+    }
+
+    interface CustomModelPayload {
+      baseUrl: string;
+      model: string;
+      apiKey?: string;
+    }
+
+    interface ModelSettings {
+      modelMode: Model.Mode;
+      customModel: CustomModel;
+    }
+
+    interface Detail {
       id: number;
       username: string;
-    }
-
-    interface Item {
-      id: number;
-      code: string;
-      maxUses: number;
-      usedCount: number;
-      expiresAt: string | null;
-      enabled: boolean;
-      createdBy?: Creator;
-      createdAt: string;
-      updatedAt: string;
-    }
-
-    interface ListPayload {
-      records: Item[];
-      total: number;
-      pages: number;
-      current: number;
-      size: number;
+      role: 'USER' | 'ADMIN';
+      orgTags: OrgTag.Mine;
+      balances: {
+        llmToken: number;
+        embeddingToken: number;
+      };
+      usage: User.UsageSnapshot;
+      modelSettings: ModelSettings;
     }
   }
 
@@ -411,6 +434,7 @@ declare namespace Api {
     interface Input {
       message: string;
       conversationId?: string;
+      modelMode?: Model.Mode;
     }
 
     interface Output {
@@ -481,3 +505,4 @@ declare namespace Api {
     }
   }
 }
+
