@@ -1,0 +1,1 @@
+"""SmartCopilot Python backend package."""
