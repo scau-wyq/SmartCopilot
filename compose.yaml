@@ -32,7 +32,7 @@ x-backend-build: &backend-build
 
 services:
   mysql:
-    image: mysql:8.4.10
+    image: mysql:8
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE:-smartcopilot}
@@ -55,7 +55,7 @@ services:
     networks: [backend]
 
   redis:
-    image: redis:7.4.9-alpine
+    image: redis:7-alpine
     restart: unless-stopped
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD:-SmartCopilotRedis123}
@@ -70,7 +70,7 @@ services:
     networks: [backend]
 
   kafka:
-    image: apache/kafka:3.9.2
+    image: apache/kafka:3.7.0
     restart: unless-stopped
     environment:
       KAFKA_NODE_ID: 1
@@ -96,7 +96,7 @@ services:
     networks: [backend]
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.17.6
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
     restart: unless-stopped
     environment:
       discovery.type: single-node
@@ -113,7 +113,7 @@ services:
     networks: [backend]
 
   minio:
-    image: minio/minio:RELEASE.2025-07-18T21-56-31Z
+    image: minio/minio
     restart: unless-stopped
     command: server /data --console-address ":9001"
     environment:

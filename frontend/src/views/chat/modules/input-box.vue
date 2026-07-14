@@ -342,6 +342,12 @@ const handleSend = async () => {
     return;
   }
 
+  if (connectionStatus.value !== 'OPEN') {
+    window.$message?.warning('聊天服务尚未连接，请稍后重试或刷新页面');
+    chatStore.wsOpen();
+    return;
+  }
+
   if (isSending.value) {
     const { error, data: tokenData } = await request<Api.Chat.Token>({
       url: 'chat/websocket-token'

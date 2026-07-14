@@ -1,5 +1,31 @@
 import { useWebSocket } from '@vueuse/core';
 import { request } from '@/service/request';
+import { getServiceBaseURL } from '@/utils/service';
+
+const isHttpProxy = import.meta.env.DEV && import.meta.env.VITE_HTTP_PROXY === 'Y';
+const { otherBaseURL } = getServiceBaseURL(import.meta.env, isHttpProxy);
+
+function createWebSocketURL(baseURL: string, path: string) {
+  const normalizedBaseURL = baseURL.replace(/\/$/, '');
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+
+  if (/^wss?:\/\//i.test(normalizedBaseURL)) {
+    return `${normalizedBaseURL}${normalizedPath}`;
+  }
+
+  if (/^https?:\/\//i.test(normalizedBaseURL)) {
+    return `${normalizedBaseURL.replace(/^http/i, 'ws')}${normalizedPath}`;
+  }
+
+  const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+  const basePath = normalizedBaseURL
+    ? normalizedBaseURL.startsWith('/')
+      ? normalizedBaseURL
+      : `/${normalizedBaseURL}`
+    : '';
+
+  return `${protocol}//${window.location.host}${basePath}${normalizedPath}`;
+}
 
 export const useChatStore = defineStore(SetupStoreId.Chat, () => {
   const NON_RETRYABLE_CLOSE_CODES = new Set([1002, 1003, 1007, 1008]);
@@ -230,7 +256,7 @@ export const useChatStore = defineStore(SetupStoreId.Chat, () => {
     if (!token) {
       return undefined;
     }
-    return `/proxy-ws/chat/${encodeURIComponent(token)}`;
+    return createWebSocketURL(otherBaseURL.ws, `/chat/${encodeURIComponent(token)}`);
   });
 
   const {
