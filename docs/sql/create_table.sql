@@ -215,31 +215,3 @@ CREATE TABLE IF NOT EXISTS user_model_preferences (
   CONSTRAINT fk_user_model_preferences_user
     FOREIGN KEY (user_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Seed organization tags after users and organization_tags exist.
-INSERT IGNORE INTO organization_tags
-  (tag_id, name, description, parent_tag, upload_max_size_bytes, created_by)
-SELECT 'DEFAULT', '默认组织', '系统默认组织标签，自动分配给所有新用户', NULL, NULL, id
-FROM users
-WHERE role = 'ADMIN'
-ORDER BY id
-LIMIT 1;
-
-INSERT IGNORE INTO organization_tags
-  (tag_id, name, description, parent_tag, upload_max_size_bytes, created_by)
-SELECT
-  CONCAT('PRIVATE_', username),
-  CONCAT(username, '的私人空间'),
-  '用户的私人组织标签，仅用户本人可访问',
-  NULL,
-  NULL,
-  id
-FROM users;
-
--- Seed default recharge packages after recharge_packages exists.
-INSERT INTO recharge_packages
-  (package_name, package_price, package_desc, package_benefit, llm_token, embedding_token, enabled, sort_order)
-VALUES
-  ('体验包', 990, '适合轻量问答和少量知识库上传。', 'LLM Token：50 万\nEmbedding Token：20 万\n模拟支付后立即到账', 500000, 200000, 1, 10),
-  ('标准包', 2990, '适合持续问答、资料整理和中等规模知识库构建。', 'LLM Token：200 万\nEmbedding Token：100 万\n模拟支付后立即到账', 2000000, 1000000, 1, 20),
-  ('专业包', 9990, '适合高频问答、团队共享资料和较大规模知识库场景。', 'LLM Token：800 万\nEmbedding Token：400 万\n模拟支付后立即到账', 8000000, 4000000, 1, 30);

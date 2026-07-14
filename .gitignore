@@ -3,6 +3,7 @@
 .env.*
 !.env.example
 !.env.sample
+!.env.docker.example
 !frontend/.env
 !frontend/.env.test
 !frontend/.env.prod
